@@ -1,0 +1,45 @@
+<div class="store-mapper">
+    <!-- Search Panel -->
+    <div class="search-panel">
+      <h2>Find a Store</h2>
+      <input
+        #autocomplete
+        type="text"
+        placeholder="Search by location"
+        class="search-input"
+      />
+      <ul class="store-list">
+        <li *ngFor="let store of filteredStores" (click)="centerMap(store)" class="store-item">
+          <span class="store-name">{{ store.display_name }}</span>
+          <p class="store-address">{{ store.Address }}</p>
+          <a href="{{store.website}}" target="_blank" rel="noopener noreferrer">Website</a>
+          <br>
+          View On Map
+          <br>
+          <a 
+  href="https://www.google.com/maps/dir/?api=1&destination={{store.Address}}" 
+  target="_blank" 
+  rel="noopener noreferrer">
+  Get Directions
+</a>
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Map Panel -->
+    <div class="map-panel" style="height: 100vh; width: 100%;">
+      <google-map
+        height="100%"
+        width="100%"
+        [center]="mapCenter"
+        [zoom]="zoom"
+      >
+        <map-marker
+          *ngFor="let store of filteredStores"
+          [position]="{ lat: store.latitude, lng: store.longitude }"
+          [label]="store.display_name"
+        ></map-marker>
+      </google-map>
+    </div>
+  </div>
+  

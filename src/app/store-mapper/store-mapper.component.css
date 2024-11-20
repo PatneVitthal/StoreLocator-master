@@ -1,0 +1,78 @@
+.store-mapper {
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Search Panel */
+  .search-panel {
+    width: 30%; /* Set width to 30% for the search panel */
+    padding: 1.5rem;
+    border-right: 1px solid #ddd;
+    background-color: #f9fafb;
+    color: #333;
+  }
+  
+  .search-panel h2 {
+    color: #00264d;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+  
+  /* Store List Styling */
+  .store-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    max-height: 60vh;
+  }
+  
+  .store-item {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: #ffffff;
+  }
+  
+  .store-item:hover {
+    background-color: #e6f0f5;
+  }
+  
+  .store-name {
+    font-weight: bold;
+    color: #004b87;
+  }
+  
+  .store-address {
+    color: #555;
+    font-size: 0.9rem;
+  }
+  
+  /* Map Panel */
+  .map-panel {
+    width: 70%; /* Set width to 70% for the map panel */
+    position: relative;
+    padding: 1rem;
+  }
+  
+  google-map {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  

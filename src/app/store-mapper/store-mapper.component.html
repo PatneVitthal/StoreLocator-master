@@ -1,45 +1,79 @@
 <div class="store-mapper">
-    <!-- Search Panel -->
-    <div class="search-panel">
-      <h2>Find a Store</h2>
-      <input
-        #autocomplete
-        type="text"
-        placeholder="Search by location"
-        class="search-input"
-      />
-      <ul class="store-list">
-        <li *ngFor="let store of filteredStores" (click)="centerMap(store)" class="store-item">
-          <span class="store-name">{{ store.display_name }}</span>
-          <p class="store-address">{{ store.Address }}</p>
-          <a href="{{store.website}}" target="_blank" rel="noopener noreferrer">Website</a>
-          <br>
-          View On Map
-          <br>
-          <a 
-  href="https://www.google.com/maps/dir/?api=1&destination={{store.Address}}" 
-  target="_blank" 
-  rel="noopener noreferrer">
-  Get Directions
-</a>
-        </li>
-      </ul>
-    </div>
-  
-    <!-- Map Panel -->
-    <div class="map-panel" style="height: 100vh; width: 100%;">
-      <google-map
-        height="100%"
-        width="100%"
-        [center]="mapCenter"
-        [zoom]="zoom"
+  <!-- Search Panel -->
+  <div class="search-panel">
+    <h2>Find a Store</h2>
+    <input
+      #autocomplete
+      type="text"
+      placeholder="Search by location"
+      class="search-input"
+      [(ngModel)]="searchQuery"
+      (ngModelChange)="filterStores()"
+    />
+    <ul class="store-list">
+      <li
+        *ngFor="let store of filteredStores; let i = index"
+        (click)="openPopup(store, i)"
+        class="store-item"
       >
-        <map-marker
-          *ngFor="let store of filteredStores"
-          [position]="{ lat: store.latitude, lng: store.longitude }"
-          [label]="store.display_name"
-        ></map-marker>
-      </google-map>
+        <span class="store-name">{{ store.display_name }}</span>
+        <p class="store-address">{{ store.Address }}</p>
+        
+          <ul class="product-recap-list">
+            <li><strong>{{ store.sun_facing_amt }}</strong> unique styles</li>
+  <li>Available with prescription</li>
+          </ul>    
+        
+      </li>
+    </ul>
+  </div>
+
+  <!-- Popup -->
+  <div class="popup" [ngStyle]="popupStyle" *ngIf="selectedStore">
+    <button class="close-btn" (click)="closePopup()">×</button>
+    <!-- Store Name -->
+    <h3>{{ selectedStore.display_name }}</h3>
+    <ul class="product-recap-list">
+      <li><strong>{{ selectedStore.sun_facing_amt }}</strong> unique styles</li>
+<li>Available with prescription</li>
+    </ul>
+    
+    <!-- Directions -->
+    <div class="popup-item">
+      <img src="assets/direction-icon.svg" alt="Directions Icon" class="icon" />
+      <a
+        [href]="'https://www.google.com/maps/dir/?api=1&destination=' + selectedStore.Address"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Get Directions
+      </a>
+    </div>
+    
+    <!-- Address -->
+    <div class="popup-item">
+      <img src="/_ui/responsive/common/_dl/assets/icons-dl/individual/find.svg" alt="Address Icon" class="icon" />
+      <span>{{ selectedStore.Address }}</span>
+    </div>
+    
+    <!-- Phone Number -->
+    <div class="popup-item">
+      <img src="/_ui/responsive/common/_dl/assets/icons-dl/individual/call.svg" alt="Phone Icon" class="icon" />
+      <a [href]="'tel:' + selectedStore.phone_number">
+        {{ selectedStore.phone_number || 'Not Available' }}
+      </a>
     </div>
   </div>
   
+
+  <!-- Map Panel -->
+  <div class="map-panel" style="height: 100vh; width: 100%;">
+    <google-map height="100%" width="100%" [center]="mapCenter" [zoom]="zoom">
+      <map-marker
+        *ngFor="let store of filteredStores"
+        [position]="{ lat: store.latitude, lng: store.longitude }"
+        [label]="store.display_name"
+      ></map-marker>
+    </google-map>
+  </div>
+</div>

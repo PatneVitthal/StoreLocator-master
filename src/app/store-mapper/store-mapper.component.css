@@ -1,3 +1,7 @@
+.popup{ 
+  font-family: inherit;
+}
+
 .store-mapper {
     display: flex;
     height: 100vh;
@@ -53,15 +57,25 @@
   }
   
   .store-name {
-    font-weight: bold;
-    color: #004b87;
+    width: 100%;
+    font-size: 18px !important;
+    line-height: 27px !important;
+    letter-spacing: 0.0012em;
+    margin-bottom: 6px !important;
+    font-family: "favorite";
+    font-weight: 700 !important;
+    color: #1F1507;
   }
   
   .store-address {
-    color: #555;
-    font-size: 0.9rem;
-  }
-  
+    font-size: 15px !important;
+    font-weight: 325 !important;
+    line-height: 20px !important;
+    letter-spacing: 0.0012em;
+    margin: 0px 0px 15px 0px !important;
+    padding: 0px;
+    color: #252525;
+}
   /* Map Panel */
   .map-panel {
     width: 70%; /* Set width to 70% for the map panel */
@@ -75,4 +89,68 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
+  .popup {
+    background: white;
+    width: 375px;
+    max-height: calc(100% - 182px);
+    min-height: 300px;
+    padding: 0 24px 24px 24px;
+    overflow-y: auto;
+    top: 150px !important;
+    position: absolute;
+    z-index: 1;
+    left: 36% !important;
+    border: 1px solid #ccc;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
   
+
+  
+  .popup-item {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    margin-bottom: 10px;
+    flex-wrap: wrap; /* Allow content to wrap */
+  }
+  
+  .popup-item span,
+  .popup-item a {
+    flex: 1;
+    word-wrap: break-word;
+    white-space: normal; /* Allow text to wrap */
+    overflow: hidden; /* Prevent content from overflowing */
+  }
+  
+ 
+  
+
+
+  
+
+
+
+
+  .close-btn{ 
+    float: right;
+    height: 50px;
+    width: 50px;
+    background: transparent !important;
+    text-indent: 0px !important;
+    margin-top: 0;
+    cursor: pointer;
+    line-height: 60px;
+    text-align: left;
+    border: none;
+  }
+
+  h3{ 
+    width: calc(100% - 50px);
+    text-align: left;
+    letter-spacing: 0.0012em;
+    padding-top: 15px !important;
+    font-family: "favorite-expanded";
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 30px;
+    color: #1F1507;
+  }

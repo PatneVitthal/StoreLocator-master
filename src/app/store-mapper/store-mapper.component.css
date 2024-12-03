@@ -1,156 +1,241 @@
-.popup{ 
+.popup {
   font-family: inherit;
 }
-
-.store-mapper {
-    display: flex;
-    height: 100vh;
-    font-family: Arial, sans-serif;
-  }
-  
-  /* Search Panel */
-  .search-panel {
-    width: 30%; /* Set width to 30% for the search panel */
-    padding: 1.5rem;
-    border-right: 1px solid #ddd;
-    background-color: #f9fafb;
-    color: #333;
-  }
-  
-  .search-panel h2 {
-    color: #00264d;
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
-  
-  .search-input {
-    width: 100%;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    font-size: 1rem;
-  }
-  
-  /* Store List Styling */
-  .store-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    overflow-y: auto;
-    max-height: 60vh;
-  }
-  
-  .store-item {
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    background-color: #ffffff;
-  }
-  
-  .store-item:hover {
-    background-color: #e6f0f5;
-  }
-  
-  .store-name {
-    width: 100%;
-    font-size: 18px !important;
-    line-height: 27px !important;
-    letter-spacing: 0.0012em;
-    margin-bottom: 6px !important;
-    font-family: "favorite";
-    font-weight: 700 !important;
-    color: #1F1507;
-  }
-  
-  .store-address {
-    font-size: 15px !important;
-    font-weight: 325 !important;
-    line-height: 20px !important;
-    letter-spacing: 0.0012em;
-    margin: 0px 0px 15px 0px !important;
-    padding: 0px;
-    color: #252525;
+.search-panel h2 {
+  color: #00264d;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
-  /* Map Panel */
-  .map-panel {
-    width: 70%; /* Set width to 70% for the map panel */
-    position: relative;
-    padding: 1rem;
-  }
-  
-  google-map {
-    width: 100%;
-    height: 100%;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  .popup {
-    background: white;
-    width: 375px;
-    max-height: calc(100% - 182px);
-    min-height: 300px;
-    padding: 0 24px 24px 24px;
-    overflow-y: auto;
-    top: 150px !important;
-    position: absolute;
-    z-index: 1;
-    left: 36% !important;
-    border: 1px solid #ccc;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-
-  
-  .popup-item {
-    display: flex;
-    align-items: flex-start; /* Align items to the top */
-    margin-bottom: 10px;
-    flex-wrap: wrap; /* Allow content to wrap */
-  }
-  
-  .popup-item span,
-  .popup-item a {
-    flex: 1;
-    word-wrap: break-word;
-    white-space: normal; /* Allow text to wrap */
-    overflow: hidden; /* Prevent content from overflowing */
-  }
-  
- 
-  
-
-
-  
-
-
-
-
-  .close-btn{ 
-    float: right;
-    height: 50px;
-    width: 50px;
-    background: transparent !important;
-    text-indent: 0px !important;
-    margin-top: 0;
-    cursor: pointer;
-    line-height: 60px;
-    text-align: left;
-    border: none;
-  }
-
-  h3{ 
-    width: calc(100% - 50px);
-    text-align: left;
-    letter-spacing: 0.0012em;
-    padding-top: 15px !important;
-    font-family: "favorite-expanded";
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 30px;
-    color: #1F1507;
-  }
+.store-list {
+  list-style: none;
+  overflow-y: scroll;
+  max-height: 80vh;
+}
+google-map {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.popup {
+  background: white;
+  width: 375px;
+  max-height: calc(100% - 182px);
+  min-height: 300px;
+  padding: 0 24px 24px 24px;
+  overflow-y: auto;
+  top: 150px !important;
+  position: absolute;
+  z-index: 1;
+  left: 30% !important;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+.search-input {
+  max-width: 410px !important;
+  margin: 4px 0px ;
+  border: 1px solid #b7b7b7 !important;
+  font-size: 16px;
+  letter-spacing: 0.0012em;
+  line-height: 16px;
+  font-weight: 325;
+  height: 46px;
+  background-color: #fff;
+  text-indent: 0px;
+  text-overflow: ellipsis;
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+.store-mapper {
+  display: flex;
+  justify-content: space-evenly;
+}
+.store-mapper .map-panel {
+  flex-basis: 70%;
+  padding: 1rem;
+}
+.store-mapper .search-panel {
+  flex-basis: 30% !important;
+  border-right: 1px solid #ddd;
+  background: #faf7f6;
+  width: 350px; /* Set a fixed or minimum width */
+  min-width: 350px; /* Ensures consistent layout */
+}
+.store-mapper .search-panel .search-container {
+  display: flex;
+  flex-direction: column;
+}
+.store-mapper .search-panel .search-container h2 {
+  margin: 4px 24px 8px;
+}
+.store-mapper .store-item {
+  cursor: pointer;
+  margin: 4px 24px 8px;
+  padding: 0px;
+  transition: all 0.2s ease 0s;
+  box-shadow: 0 0 1px #f0ede8;
+  border: 1px solid #f0ede8 !important;
+  border-radius: 5px;
+  background: #fff;
+}
+.store-mapper .store-item:hover {
+  box-shadow: 0 0 1px transparent !important;
+  border: 1px solid #e50e63 !important;
+  background-color: white !important;
+}
+.store-mapper .store-item-container {
+  padding: 24px;
+  margin: 0px;
+}
+.store-mapper .store-item-container h3 {
+  width: 100%;
+  font-size: 18px !important;
+  line-height: 27px !important;
+  letter-spacing: 0.0012em;
+  margin-bottom: 6px !important;
+  font-weight: 700 !important;
+  color: #1f1507;
+}
+.store-mapper .store-item-container p {
+  font-size: 15px !important;
+  font-weight: 325 !important;
+  line-height: 20px !important;
+  letter-spacing: 0.0012em;
+  margin: 0px 0px 15px 0px !important;
+  padding: 0px;
+  color: #252525;
+}
+.store-mapper .store-item-container ul {
+  border: 0 !important;
+  margin: 8px 0 0;
+  padding: 16px 0 8px !important;
+}
+.store-mapper .store-item-container ul li > span, .store-mapper .store-item-container ul li > a {
+  padding: 0;
+  display: inline;
+  margin: 0;
+  font-weight: 350;
+  line-height: 22.5px;
+  color: #1f1507 !important;
+  font-size: 15px;
+  letter-spacing: 0.0012em;
+}
+.store-mapper .store-item-container ul li > span:first-child, .store-mapper .store-item-container ul li > a:first-child {
+  background: none;
+  padding-left: 0;
+}
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0 15px 0 !important;
+}
+.popup-header button {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  cursor: pointer;
+}
+.popup-header button img {
+  width: 16px;
+  height: 16px;
+}
+ul[class="product-recap-list"] {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  list-style-type: none;
+}
+.popup-content .product-recap-list, .popup-content .popup-item:first-child {
+  margin: 8px 0 0;
+  padding: 16px 0 16px !important;
+}
+.popup-content .popup-item:first-child {
+  border-top: 1px solid #f0ede8 !important;
+}
+.popup-content .product-recap-list {
+  border-top: 1px solid #f0ede8 !important;
+  border-bottom: 1px solid #f0ede8 !important;
+}
+.popup-content .product-recap-list li > span, .popup-content .product-recap-list li > a {
+  font-size: 14px;
+}
+.js--directions {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  position: relative;
+  font-size: 0;
+  line-height: 30px;
+}
+.js--directions > span::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  background-color: #db1d53;
+  background-image: url("https://www.mauijim.com/_ui/responsive/common/_dl/assets/icons-dl/individual/action-directions.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  border-radius: 50%;
+  background-size: 18px;
+}
+.js--directions:hover {
+  text-decoration: underline;
+}
+.popup-item-list-content {
+  list-style-type: none;
+  margin: 8px 0 0;
+  padding: 16px 0 16px !important;
+}
+.popup-item-list-content li > span, .popup-item-list-content li > a {
+  padding-left: 46px !important;
+  font-size: 15px;
+  letter-spacing: 0.0012em;
+  padding-bottom: 16px !important;
+  margin: 0;
+  font-weight: 350;
+  line-height: 22.5px;
+  color: #1f1507 !important;
+}
+.popup-item-list-content li.js--address {
+  background: transparent url("https://www.mauijim.com/_ui/responsive/common/_dl/assets/icons-dl/individual/find.svg") no-repeat scroll left top;
+  background-size: 26px;
+  filter: saturate(0);
+}
+.popup-item-list-content li.js--address span {
+  width: 308px;
+  display: block;
+  white-space: normal;
+  word-wrap: break-word;
+}
+.popup-item-list-content li.js--phone {
+  background: transparent url("https://www.mauijim.com/_ui/responsive/common/_dl/assets/icons-dl/individual/call.svg") no-repeat scroll left top;
+  background-size: 26px;
+  filter: saturate(0);
+}
+.popup-item-list-content li.js--phone a {
+  text-decoration: none;
+}
+a.js--moredetails {
+  margin: 8px 0 0;
+  padding: 16px 0 16px !important;
+  border-top: 1px solid #f0ede8 !important;
+  display: block;
+  color: #1f1507 !important;
+  text-transform: uppercase;
+  background: transparent url("https://www.mauijim.com/_ui/responsive/common/_dl/assets/icons-dl/individual/arrow-right-alt.svg") no-repeat scroll right center;
+  background-size: 14.48px auto !important;
+  filter: saturate(0);
+  font-size: 15px;
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -1,77 +1,89 @@
 <div class="store-mapper">
   <!-- Search Panel -->
   <div class="search-panel">
-    <h2>Find a Store</h2>
-    <input
-      #autocomplete
-      type="text"
-      placeholder="Search by location"
-      class="search-input"
-      [(ngModel)]="searchQuery"
-      (ngModelChange)="filterStores()"
-    />
+    <div class="search-container">
+      <h2>Find a Store</h2>
+      <input #autocomplete type="text" placeholder="Search by location" class="search-input" [(ngModel)]="searchQuery"
+        (ngModelChange)="filterStores()" />
+    </div>
     <ul class="store-list">
-      <li
-        *ngFor="let store of filteredStores; let i = index"
-        (click)="openPopup(store, i)"
-        class="store-item"
-      >
-        <span class="store-name">{{ store.display_name }}</span>
-        <p class="store-address">{{ store.Address }}</p>
-        
+      <li *ngFor="let store of filteredStores; let i = index" (click)="openPopup(store, i)" class="store-item">
+        <div class="store-item-container">
+          <h3 class="store-name">{{ store.display_name }}</h3>
+          <p class="store-address">{{ store.Address }}</p>
+
           <ul class="product-recap-list">
             <li><strong>{{ store.sun_facing_amt }}</strong> unique styles</li>
-  <li>Available with prescription</li>
-          </ul>    
-        
+            <li>Available with prescription</li>
+          </ul>
+        </div>
+
       </li>
     </ul>
   </div>
 
   <!-- Popup -->
   <div class="popup" [ngStyle]="popupStyle" *ngIf="selectedStore">
-    <button class="close-btn" (click)="closePopup()">×</button>
-    <!-- Store Name -->
-    <h3>{{ selectedStore.display_name }}</h3>
-    <ul class="product-recap-list">
-      <li><strong>{{ selectedStore.sun_facing_amt }}</strong> unique styles</li>
-<li>Available with prescription</li>
-    </ul>
-    
-    <!-- Directions -->
-    <div class="popup-item">
-      <img src="assets/direction-icon.svg" alt="Directions Icon" class="icon" />
-      <a
-        [href]="'https://www.google.com/maps/dir/?api=1&destination=' + selectedStore.Address"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Get Directions
-      </a>
+    <div class="popup-header">
+      <!-- Store Name -->
+      <h3>{{ selectedStore.display_name }}</h3>
+      <button class="close-btn" (click)="closePopup()">
+        <img src="/_ui/responsive/common/_dl/assets/icons-dl/individual/close.png" />
+      </button>
     </div>
-    
-    <!-- Address -->
-    <div class="popup-item">
-      <img src="/_ui/responsive/common/_dl/assets/icons-dl/individual/find.svg" alt="Address Icon" class="icon" />
-      <span>{{ selectedStore.Address }}</span>
-    </div>
-    
-    <!-- Phone Number -->
-    <div class="popup-item">
-      <img src="/_ui/responsive/common/_dl/assets/icons-dl/individual/call.svg" alt="Phone Icon" class="icon" />
-      <a [href]="'tel:' + selectedStore.phone_number">
-        {{ selectedStore.phone_number || 'Not Available' }}
-      </a>
+    <div class="popup-content">
+      <!-- Directions -->
+      <div class="popup-item">
+        <!-- <img src="assets/direction-icon.svg" alt="Directions Icon" class="icon" /> -->
+        <a class="js--directions" [href]="'https://www.google.com/maps/dir/?api=1&destination=' + selectedStore.Address"
+          target="_blank" rel="noopener noreferrer">
+          <span></span>
+          Get Directions
+        </a>
+      </div>
+
+      <ul class="product-recap-list">
+        <li><strong>{{ selectedStore.sun_facing_amt }}</strong> unique styles</li>
+        <li>Available with prescription</li>
+      </ul>
+
+      <!-- Address -->
+      <ul class="popup-item-list-content">
+        <!-- Address Item -->
+        <li class="js--address">
+          <!-- <img src="/_ui/responsive/common/_dl/assets/icons-dl/individual/find.svg" alt="Address Icon" class="icon" /> -->
+          <span>{{ selectedStore.Address }}</span>
+        </li>
+
+        <!-- Phone Number Item -->
+        <li class="js--phone">
+          <!-- <img src="/_ui/responsive/common/_dl/assets/icons-dl/individual/call.svg" alt="Phone Icon" class="icon" /> -->
+          <a [href]="'tel:' + selectedStore.phone_number">
+            {{ selectedStore.phone_number || 'Not Available' }}
+          </a>
+        </li>
+      </ul>
+
+      <div class="popup-item">
+        <!--<a class="js--moredetails" [href]="" target="_blank" rel="noopener noreferrer">More details about this
+          //location</a>-->
+          <div class="store_hours"><table class="dealer-schema__hours-container"><tbody>
+            <tr class="dealer-schema__hours-day"><td>Monday</td><td>{{selectedStore.monday_time}}</td></tr>
+        <tr class="dealer-schema__hours-day"><td>Tuesday</td><td>{{selectedStore.tuesday_time}}</td></tr>
+        <tr class="dealer-schema__hours-day"><td>Wednesday</td><td>{{selectedStore.wednesday_time}}</td></tr>
+        <tr class="dealer-schema__hours-day"><td>Thursday</td><td>{{selectedStore.thursday_time}}</td></tr>
+        <tr class="dealer-schema__hours-day"><td>Friday</td><td>{{selectedStore.friday_time}}</td></tr>
+        <tr class="dealer-schema__hours-day"><td>Saturday</td><td>{{selectedStore.saturday_time}}</td></tr>
+        <tr class="dealer-schema__hours-day"><td>Sunday</td><td>{{selectedStore.sunday_time}}</td></tr></tbody></table></div>
+  
+      </div>
+
     </div>
   </div>
-  
-
   <!-- Map Panel -->
-  <div class="map-panel" style="height: 100vh; width: 100%;">
+  <div class="map-panel">
     <google-map height="100%" width="100%" [center]="mapCenter" [zoom]="zoom">
-      <map-marker
-        *ngFor="let store of filteredStores"
-        [position]="{ lat: store.latitude, lng: store.longitude }"
+      <map-marker *ngFor="let store of filteredStores" [position]="{ lat: store.latitude, lng: store.longitude }"
         [label]="store.display_name"
       ></map-marker>
     </google-map>

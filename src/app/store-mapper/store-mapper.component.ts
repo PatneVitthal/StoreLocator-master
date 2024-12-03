@@ -13,6 +13,13 @@ interface Store {
   website:string;
   phone_number:String;
   sun_facing_amt:String;
+  monday_time:String;
+  tuesday_time:String;
+  wednesday_time:String;
+  thursday_time:String;
+  friday_time:String;
+  saturday_time:String;
+  sunday_time:String;
 }
 
 @Component({
@@ -30,6 +37,10 @@ export class StoreMapperComponent implements AfterViewInit {
   zoom: number = 10;
   loading: boolean = false;
   error: string | null = null;
+  storeIcon: google.maps.Icon = {
+    url: '/_ui/responsive/common/_dl/assets/icons/individual/map-pin1.svg', // Path to your store icon image
+    scaledSize: new google.maps.Size(40, 40), // Adjust the size of the icon
+  };
 
   selectedStore: Store | null = null; // Holds the currently selected store for the popup
   popupStyle: { top: string; left: string } = { top: '0px', left: '0px' };
@@ -42,6 +53,7 @@ export class StoreMapperComponent implements AfterViewInit {
   }
 
   fetchStores(lat: number, lng: number) {
+    console.log("inside fetch store");
     this.loading = true;
     this.error = null;
     this.http.get<Store[]>(`http://localhost:3000/api/findStore?lat=${lat}&long=${lng}`)
@@ -56,9 +68,11 @@ export class StoreMapperComponent implements AfterViewInit {
         this.filteredStores = [...this.stores];
         this.loading = false;
       });
+      console.log("end of fetch stor")
   }
 
   initAutocomplete() {
+    console.log("init auto complte");
     if (typeof google === 'undefined' || !google.maps) {
       console.error('Google Maps API is not loaded.');
       return;
@@ -69,15 +83,17 @@ export class StoreMapperComponent implements AfterViewInit {
     );
 
     autocomplete.addListener('place_changed', () => {
+      console.log("searching")
       const place = autocomplete.getPlace();
       if (place.geometry && place.geometry.location) {
         const lat = place.geometry.location.lat();
         const lng = place.geometry.location.lng();
         this.mapCenter = { lat, lng };
-        this.zoom = 12;
+        this.zoom = 18;
 
         // Fetch stores near the selected place's coordinates
         this.fetchStores(lat, lng);
+        console.log("in search")
       } else {
         console.warn('Place geometry or location is undefined.');
       }
@@ -85,11 +101,13 @@ export class StoreMapperComponent implements AfterViewInit {
   }
 
   filterStores() {
+    console.log("filter stores")
     this.filteredStores = this.stores.filter((store) =>
       store.display_name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-      store.Address.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-      store.website.toLowerCase().includes(this.searchQuery.toLowerCase())
+      store.Address.toLowerCase().includes(this.searchQuery.toLowerCase())
+      
     );
+    console.log("after filter stores")
   }
 
   centerMap(store: Store) {

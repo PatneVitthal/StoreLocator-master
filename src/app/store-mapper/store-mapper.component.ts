@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -33,9 +33,10 @@ export class StoreMapperComponent implements AfterViewInit {
   stores: Store[] = [];
   filteredStores: Store[] = [];
   searchQuery: string = '';
-  mapCenter = { lat: 36.4685099, lng: -86.6535672 }; // Default center coordinates
-  zoom: number = 10;
+  mapCenter = { lat: 32.4685099, lng: -86.6535672 }; // Default center coordinates
+  zoom: number = 6;
   loading: boolean = false;
+  isDrawerOpen:boolean = false;
   error: string | null = null;
   storeIcon: google.maps.Icon = {
     url: '/_ui/responsive/common/_dl/assets/icons/individual/map-pin1.svg', // Path to your store icon image
@@ -45,20 +46,32 @@ export class StoreMapperComponent implements AfterViewInit {
   selectedStore: Store | null = null; // Holds the currently selected store for the popup
   popupStyle: { top: string; left: string } = { top: '0px', left: '0px' };
 
-  constructor(private http: HttpClient) {}
-
+  constructor(private http: HttpClient,private cdr: ChangeDetectorRef) {}
   ngAfterViewInit() {
     this.initAutocomplete();
-    this.fetchStores(this.mapCenter.lat, this.mapCenter.lng); // Fetch stores around the default location
+  
+    const latRange = 1; // Adjust range as needed
+    const longRange = 1; // Adjust range as needed
+  
+    const minLat = this.mapCenter.lat - latRange;
+    const maxLat = this.mapCenter.lat + latRange;
+    const minLong = this.mapCenter.lng - longRange;
+    const maxLong = this.mapCenter.lng + longRange;
+  
+    // Fetch stores within the range
+    this.fetchStores(minLat, maxLat, minLong, maxLong);
   }
+  
 
-  fetchStores(lat: number, lng: number) {
-    console.log("inside fetch store");
+  fetchStores(minLat: number, maxLat: number, minLong: number, maxLong: number) {
     this.loading = true;
     this.error = null;
-    this.http.get<Store[]>(`http://localhost:3000/api/findStore?lat=${lat}&long=${lng}`)
+    this.http
+      .get<Store[]>(
+        `http://localhost:3000/api/findStore?minLat=${minLat}&maxLat=${maxLat}&minLong=${minLong}&maxLong=${maxLong}`
+      )
       .pipe(
-        catchError(error => {
+        catchError((error) => {
           this.error = 'Failed to load stores. Please try again.';
           return of([]);
         })
@@ -67,12 +80,12 @@ export class StoreMapperComponent implements AfterViewInit {
         this.stores = data;
         this.filteredStores = [...this.stores];
         this.loading = false;
+        this.cdr.detectChanges();
       });
-      console.log("end of fetch stor")
   }
+  
 
   initAutocomplete() {
-    console.log("init auto complte");
     if (typeof google === 'undefined' || !google.maps) {
       console.error('Google Maps API is not loaded.');
       return;
@@ -83,51 +96,70 @@ export class StoreMapperComponent implements AfterViewInit {
     );
 
     autocomplete.addListener('place_changed', () => {
-      console.log("searching")
       const place = autocomplete.getPlace();
-      if (place.geometry && place.geometry.location) {
-        const lat = place.geometry.location.lat();
-        const lng = place.geometry.location.lng();
-        this.mapCenter = { lat, lng };
-        this.zoom = 18;
+      if (place.geometry?.viewport && place.geometry.location) {
+        const viewport = place.geometry.viewport;
 
-        // Fetch stores near the selected place's coordinates
-        this.fetchStores(lat, lng);
-        console.log("in search")
+        // Safely extract bounds and enforce type as number
+        const minLat: number = viewport.getSouthWest().lat() ?? 0;
+        const maxLat: number = viewport.getNorthEast().lat() ?? 0;
+        const minLong: number = viewport.getSouthWest().lng() ?? 0;
+        const maxLong: number = viewport.getNorthEast().lng() ?? 0;
+        const centerLat = Math.max(minLat, Math.min(place.geometry.location.lat(), maxLat));
+        const centerLng = Math.max(minLong, Math.min(place.geometry.location.lng(), maxLong));
+
+    this.mapCenter = {
+      lat: centerLat,
+      lng: centerLng,
+    };
+  
+        this.zoom = 6;
+    
+        // Fetch stores within the bounds
+        this.fetchStores(minLat, maxLat, minLong, maxLong);
       } else {
-        console.warn('Place geometry or location is undefined.');
+        console.warn('Place geometry or viewport is undefined.');
       }
     });
-  }
+  }     
 
   filterStores() {
-    console.log("filter stores")
+   
     this.filteredStores = this.stores.filter((store) =>
       store.display_name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
       store.Address.toLowerCase().includes(this.searchQuery.toLowerCase())
       
     );
-    console.log("after filter stores")
+    
   }
 
   centerMap(store: Store) {
     this.mapCenter = { lat: store.latitude, lng: store.longitude };
-    this.zoom = 14; // Adjust zoom to focus on a specific store
+    this.zoom = 6; // Adjust zoom to focus on a specific store
   }
 
-  openPopup(store: Store, index: number) {
+  openPopup(store: Store, index: number): void {
     this.selectedStore = store;
-
-    // Calculate popup position relative to the clicked store item
     const listItem = document.querySelectorAll('.store-item')[index] as HTMLElement;
-    const rect = listItem.getBoundingClientRect();
-    this.popupStyle = {
-      top: `${rect.top + window.scrollY}px`,
-      left: `${rect.right + 10}px`,
-    };
+    if (listItem) {
+      const rect = listItem.getBoundingClientRect();
+      this.popupStyle = {
+        top: `${rect.top + window.scrollY}px`,
+        left: `${rect.right + 10}px`,
+      };
+    }
+    this.cdr.detectChanges(); // Trigger manual change detection if using OnPush
+    
   }
+  
 
   closePopup() {
     this.selectedStore = null; // Close the popup
+    this.cdr.detectChanges(); // Trigger manual change detection if using OnPush
   }
+  toggleDrawer(): void {
+    this.isDrawerOpen = !this.isDrawerOpen;
+    this.cdr.detectChanges(); // Trigger manual change detection if using OnPush
+  } 
+  
 }

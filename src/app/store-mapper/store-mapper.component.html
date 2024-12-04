@@ -19,6 +19,10 @@
         </div>
 
       </li>
+       <li *ngIf="filteredStores.length === 0" class="no-store-item">
+      <p>No stores found for this location</p>
+    </li>
+  
     </ul>
   </div>
 
@@ -62,21 +66,28 @@
             {{ selectedStore.phone_number || 'Not Available' }}
           </a>
         </li>
-      </ul>
-
-      <div class="popup-item">
-        <!--<a class="js--moredetails" [href]="" target="_blank" rel="noopener noreferrer">More details about this
-          //location</a>-->
-          <div class="store_hours"><table class="dealer-schema__hours-container"><tbody>
-            <tr class="dealer-schema__hours-day"><td>Monday</td><td>{{selectedStore.monday_time}}</td></tr>
-        <tr class="dealer-schema__hours-day"><td>Tuesday</td><td>{{selectedStore.tuesday_time}}</td></tr>
-        <tr class="dealer-schema__hours-day"><td>Wednesday</td><td>{{selectedStore.wednesday_time}}</td></tr>
-        <tr class="dealer-schema__hours-day"><td>Thursday</td><td>{{selectedStore.thursday_time}}</td></tr>
-        <tr class="dealer-schema__hours-day"><td>Friday</td><td>{{selectedStore.friday_time}}</td></tr>
-        <tr class="dealer-schema__hours-day"><td>Saturday</td><td>{{selectedStore.saturday_time}}</td></tr>
-        <tr class="dealer-schema__hours-day"><td>Sunday</td><td>{{selectedStore.sunday_time}}</td></tr></tbody></table></div>
-  
+      
+<li class="">
+      <div class="working-hours-container">
+        <div class="toggle-text" (click)="toggleDrawer()">
+          Show opening hours <span>{{ isDrawerOpen ? '▲' : '▼' }}</span>
+        </div>
+        <div *ngIf="isDrawerOpen" [ngClass]="{ 'working-hours-drawer': true, 'open': isDrawerOpen }">
+          <table>
+            <tbody>
+              <tr><td>Monday</td><td>{{selectedStore.monday_time}}</td></tr>
+              <tr><td>Tuesday</td><td>{{selectedStore.tuesday_time}}</td></tr>
+              <tr><td>Wednesday</td><td>{{selectedStore.wednesday_time}}</td></tr>
+              <tr><td>Thursday</td><td>{{selectedStore.thursday_time}}</td></tr>
+              <tr><td>Friday</td><td>{{selectedStore.friday_time}}</td></tr>
+              <tr><td>Saturday</td><td>{{selectedStore.saturday_time}}</td></tr>
+              <tr><td>Sunday</td><td>{{selectedStore.sunday_time}}</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+    </li>
+    </ul>
 
     </div>
   </div>
@@ -84,7 +95,7 @@
   <div class="map-panel">
     <google-map height="100%" width="100%" [center]="mapCenter" [zoom]="zoom">
       <map-marker *ngFor="let store of filteredStores" [position]="{ lat: store.latitude, lng: store.longitude }"
-        [label]="store.display_name"
+         [title]="store.display_name" [icon]="storeIcon"
       ></map-marker>
     </google-map>
   </div>

@@ -239,3 +239,20 @@ a.js--moredetails {
   text-decoration: underline;
   cursor: pointer;
 }
+.working-hours-container {
+  margin-top: 1rem; /* Add spacing above the working hours */
+}
+
+.toggle-text {
+  cursor: pointer; /* Add a cursor to indicate it's clickable */
+  font-weight: bold; /* Make the text bold */
+  display: block; /* Make it a block element to take full width */
+  text-align: center; /* Center align the text */
+  margin-bottom: 1rem; /* Space below the toggle text */
+}
+.no-store-item {
+  text-align: center;
+  font-size: 18px;
+  color: #888;
+  padding: 20px;
+}
